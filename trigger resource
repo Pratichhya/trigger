@@ -1,0 +1,37 @@
+Begin
+if new.attr4 <> old.attr4 and new.attr5 <> old.attr5 then
+		update c336
+		set attr3 = attr10-new.attr4+new.attr5,
+		attr4 = new .attr4 , attr5 = new.attr5
+		where gid = new.gid;
+elseif new.attr4 <> old.attr4 then
+		update c336
+		set attr4 = new .attr4 ,
+			attr3 = attr10 - new.attr4 
+		where gid = new.gid;
+elseif new.attr5 <> old.attr5 then
+		update c336
+		set attr5 = new.attr5,
+			attr4 = old.attr4-new.attr5,
+			attr3 = attr10-new.attr4+new.attr5
+		where gid = new.gid;
+end if;
+if new.attr6 <> old.attr6 then
+		update c336
+		set attr9 = old.attr6,
+		attr6 = new.attr6
+		where gid =new.gid;
+end if;
+if new.attr7 <> old.attr7 then
+		update c336
+		set attr8 = old.attr7,
+		attr7 = new.attr7
+		where gid =new.gid;
+end if; return new;
+end;
+
+
+create trigger val_change
+before update on ambu
+for each row
+execute procedure manage();
