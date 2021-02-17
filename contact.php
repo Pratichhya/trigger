@@ -1,76 +1,41 @@
 <?php
-  
-    require ("class.phpmailer.php");
-  
-    if(isset($_POST['submit'])){
-        $name=$_POST['name']; // Get Name value from HTML Form
-        $mobile=$_POST['mobile'];  // Get Mobile No
-        $email=$_POST['email'];  // Get Email Value
-        $message=$_POST['message']; // Get Message Value
-          
-          
-        $mail = new PHPMailer();
-          
-        $mail->IsSMTP();
-        $mail->Host = "websapex.com"; // Your Domain Name
-          
-        $mail->SMTPAuth = true;
-        $mail->Port = 587;
-        $mail->Username = "info@websapex.com"; // Your Email ID
-        $mail->Password = "DT~-RQyJlaFV"; // Password of your email id
-          
-        $mail->From = "info@websapex.com";
-        $mail->FromName = "WebsApex Team";
-        $mail->AddAddress ("info@websapex.com"); // On which email id you want to get the message
-        $mail->AddCC ($email);
-          
-        $mail->IsHTML(true);
-          
-        $mail->Subject = "Enquiry from Website submitted by $name"; // This is your subject
-          
-        // HTML Message Starts here
-          
-        $mail->Body = "
-        <html>
-            <body>
-                <table style='width:600px;'>
-                    <tbody>
-                        <tr>
-                            <td style='width:150px'><strong>Name: </strong></td>
-                            <td style='width:400px'>$name</td>
-                        </tr>
-                        <tr>
-                            <td style='width:150px'><strong>Email ID: </strong></td>
-                            <td style='width:400px'>$email</td>
-                        </tr>
-                        <tr>
-                            <td style='width:150px'><strong>Mobile No: </strong></td>
-                            <td style='width:400px'>$mobile</td>
-                        </tr>
-                        <tr>
-                            <td style='width:150px'><strong>Message: </strong></td>
-                            <td style='width:400px'>$message</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </body>
-        </html>
-        ";
-        // HTML Message Ends here
-          
-              
-        if(!$mail->Send()) {
-            // Message if mail has been sent
-            echo "<script>
-                alert('Submission failed.');
-            </script>";
-        }
-        else {
-            // Message if mail has been not sent
-            echo "<script>
-                alert('Email has been sent successfully.');
-            </script>";
-        }
-  
-    }
+$first_name="First Name : ".$_POST['first_name']."<br>";
+$last_name="Last Name :". $_POST['last_name']. "<br>";
+$your_email="Your Email :".$_POST['email']. "<br>";
+$telephone="Your Telephone :".$_POST['telephone']. "<br>";
+$your_message="Your Comments :".$_POST['comments']. "<br>";
+$message = "
+ \n $first_name \n 
+ \n $last_name \n  
+ \n $your_email \n 
+ \n $telephone \n 
+ \n $your_message \n
+";
+echo $message;
+include "PHPMailer_5.2.4/class.phpmailer.php"; 
+
+
+$mail = new PHPMailer;
+ $mail->isSMTP();                                      
+ $mail->Host = 'smtp.gmail.com';
+
+ $mail->SMTPAuth = true;          
+ $mail->Username = 'mepratichhya@gmail.com';
+ $mail->Password = 'stmarysschool';           
+ $mail->SMTPSecure = 'tls';              
+ $mail->Port = 587;                      
+ $mail->setFrom('someaddress@example.com', 'Mailer');
+ $mail->addAddress($your_email, 'Name');
+ $mail->addAttachment('fileaddress');       
+ $mail->isHTML(true);                              
+ $mail->Subject = 'Here is the subject';
+ $mail->Body    = $message;
+ $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+ if(!$mail->send()) {
+    echo 'Message could not be sent.';
+    echo 'Mailer Error: ' . $mail->ErrorInfo;
+ } else {
+    echo 'Message has been sent';
+ }
 ?>
